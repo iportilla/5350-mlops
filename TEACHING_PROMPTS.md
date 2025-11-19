@@ -11,7 +11,7 @@ This document contains the sequence of prompts used to build the Spam Classifier
 *   **Outcome**: A simple Python script using K-Nearest Neighbors (due to library constraints) to classify messages based on length and punctuation.
 
 **Prompt 2:**
-> "next save the model for consuming via a streamlit UI"
+> "next save the model for testing via streamlit UI"
 
 *   **Goal**: Model Persistence & Serving.
 *   **Outcome**: Refactoring code into a class, saving the model with `pickle`, and creating a `Streamlit` app for user interaction.
@@ -25,7 +25,7 @@ This document contains the sequence of prompts used to build the Spam Classifier
 ## Phase 2: Containerization
 
 **Prompt 4:**
-> "perfect,next let's a deployment with docker, create Dockerfile and folder structure"
+> "perfect,next let's create a deployment with docker, create Dockerfile and folder structure"
 
 *   **Goal**: Reproducibility & Deployment.
 *   **Outcome**: Reorganizing into a `src` directory, creating a `Dockerfile` and `requirements.txt`.
@@ -63,7 +63,7 @@ This document contains the sequence of prompts used to build the Spam Classifier
 *   **Outcome**: Discussion of deployment strategies (Shadow, Canary, Blue/Green) and the importance of Quality Gates (the pipeline rejected the new model because accuracy dropped).
 
 **Prompt 10:**
-> "no, just create a new readme for all these mlops best practices"
+> "Create a new readme for all these mlops best practices"
 
 *   **Goal**: Knowledge Sharing.
 *   **Outcome**: `MLOPS_README.md` detailing the pipeline architecture and deployment strategies.
