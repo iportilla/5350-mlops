@@ -14,7 +14,7 @@ Explore the following documents to understand different aspects of the project:
 *   **Target Audience**: Developers wanting to run the app.
 
 ```
-/Users/fiery/Downloads/spam/
+./spam/
 ├── Dockerfile
 ├── requirements.txt
 ├── README.md               # Cover Page
