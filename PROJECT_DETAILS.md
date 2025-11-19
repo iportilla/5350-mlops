@@ -27,7 +27,7 @@ A simple machine learning application to classify SMS messages as 'Ham' (legitim
 
 1.  **Clone the repository**:
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/iportilla/5350-mlops.git
     cd spam
     ```
 
