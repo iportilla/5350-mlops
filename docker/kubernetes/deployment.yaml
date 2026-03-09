@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spam-classifier
+  labels:
+    app: spam-classifier
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spam-classifier
+  template:
+    metadata:
+      labels:
+        app: spam-classifier
+    spec:
+      containers:
+      - name: spam-classifier
+        image: spam-classifier:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
