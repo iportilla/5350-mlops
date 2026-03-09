@@ -90,28 +90,26 @@ Model v3 achieves high accuracy *and* near-perfect recall for spam. This is beca
 
 ### Confusion Matrix for Model v2 vs Model v3
 
-````carousel
 ```mermaid
-quadrantChart
-    title "Confusion Matrix (Model v2 - Imbalanced)"
-    x-axis "Predicted Ham" --> "Predicted Spam"
-    y-axis "Actual Spam" --> "Actual Ham"
-    quadrant-1 "FP: 8"
-    quadrant-2 "TN: 211"
-    quadrant-3 "FN: 31"
-    quadrant-4 "TP: 0"
+flowchart TB
+subgraph Model_v2_Imbalanced
+A[Actual Spam<br>Predicted Spam<br>TP: 0]
+B[Actual Spam<br>Predicted Ham<br>FN: 31]
+C[Actual Ham<br>Predicted Spam<br>FP: 8]
+D[Actual Ham<br>Predicted Ham<br>TN: 211]
+end
 ```
-<!-- slide -->
+
+
 ```mermaid
-quadrantChart
-    title "Confusion Matrix (Model v3 - Balanced)"
-    x-axis "Predicted Ham" --> "Predicted Spam"
-    y-axis "Actual Spam" --> "Actual Ham"
-    quadrant-1 "FP: 3"
-    quadrant-2 "TN: 247"
-    quadrant-3 "FN: 5"
-    quadrant-4 "TP: 245"
-```
+flowchart TB
+    A[TP 245<br>Actual Spam<br>Predicted Spam]
+    B[FN 5<br>Actual Spam<br>Predicted Ham]
+    C[FP 3<br>Actual Ham<br>Predicted Spam]
+    D[TN 247<br>Actual Ham<br>Predicted Ham]
+
+    A --- B
+    C --- D
 ````
 
 ### Next Steps & Extensions
