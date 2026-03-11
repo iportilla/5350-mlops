@@ -46,7 +46,7 @@ ssh ubuntu@VM_IP
 Example:
 
 ```
-ssh ubuntu@34.120.15.44
+ssh ubuntu@54.213.66.192
 ```
 
 
@@ -100,7 +100,7 @@ git clone https://github.com/iportilla/5350-mlops.git
 Move into the project directory:
 
 ```
-cd 5350-mlops
+cd 5350-mlops/docker/
 ```
 
 
@@ -109,11 +109,7 @@ cd 5350-mlops
 
 
 
-
-
 # **Step 4 — Build the Docker Image**
-
-
 
 
 
@@ -140,24 +136,19 @@ This step will:
 
 
 
-
 # **Step 5 — Run the Docker Container**
 
 
 
-
-
-Start the spam classifier API.
+Start the spam classifier UI.
 
 ```
 make run
 ```
 
-The API will start inside the container.
+This will start a streamlit UI.
 
 
-
-------
 
 
 
