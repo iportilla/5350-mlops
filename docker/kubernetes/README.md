@@ -92,28 +92,24 @@ kubectl get pods
 # spam-classifier-57d5599577-qdpwc   1/1     Running   0          96s
 ```
 
-### 4. Access the API (Reliable Method)
-Since the `LoadBalancer` might stay **pending** on local Mac/Windows environments, the most reliable way to access your API is using **port-forwarding**:
+### 4. Access the Web UI (Reliable Method)
+Since the `LoadBalancer` might stay **pending** on local Mac/Windows environments, the most reliable way to access your application is using **port-forwarding**:
 
 ```bash
 # In a separate terminal
 kubectl port-forward service/spam-classifier-service 8080:80
 ```
 
-Now you can test the API with `curl` at `localhost:8080`:
+Now you can open your browser and navigate to `http://localhost:8080`.
 
-```bash
-curl -X POST http://localhost:8080/classify \
-  -H "Content-Type: application/json" \
-  -d '{"message": "Congratulations! You won a FREE prize!"}'
-```
+**Note:** The application now provides a Streamlit Web UI. The previous Flask REST API endpoints (like `/classify`) are no longer available.
 
 ---
 
 ## Troubleshooting
 
 ### Connection Refused?
-If `kubectl apply` worked but `curl` fails, your `LoadBalancer` is likely still pending. Use the **Port-Forward** command above.
+If `kubectl apply` worked but the browser fails to connect, your `LoadBalancer` is likely still pending. Use the **Port-Forward** command above.
 ```bash
 kubectl config get-contexts
 kubectl config use-context k3d-my-cluster

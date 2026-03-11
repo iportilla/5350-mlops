@@ -21,7 +21,7 @@ A **Pod** is the smallest deployable unit in Kubernetes. It represents a single 
 ```mermaid
 flowchart TD
     subgraph Pod ["Pod: spam-classifier-pod"]
-        C1["Spam Classifier Container (Port 8080)"]
+        C1["Spam Classifier Container (Streamlit Port 8080)"]
         D1["Volumes / Shared Storage"]
     end
 ```
@@ -103,11 +103,11 @@ flowchart TD
         SVC -->|"Load Balance"| P2["Pod: instance-2"]
         
         subgraph Pod1 ["Pod 1"]
-            P1 -->|"Port 8080"| C1["Flask Container"]
+            P1 -->|"Port 8080"| C1["Streamlit Container"]
         end
         
         subgraph Pod2 ["Pod 2"]
-            P2 -->|"Port 8080"| C2["Flask Container"]
+            P2 -->|"Port 8080"| C2["Streamlit Container"]
         end
     end
     
