@@ -4,7 +4,7 @@
 # Image settings
 IMAGE_NAME ?= spam-classifier
 IMAGE_TAG ?= latest
-CONTAINER_NAME ?= spam-classifier-api
+CONTAINER_NAME ?= spam-classifier-ui
 PORT ?= 8080
 
 # Docker registry (optional)
@@ -29,7 +29,7 @@ help:
 	@echo "  make stop     - Stop and remove the container"
 	@echo "  make logs     - View container logs"
 	@echo "  make shell    - Open a shell in the container"
-	@echo "  make test     - Test the API endpoints"
+	@echo "  make test     - Test the app health check"
 	@echo "  make clean    - Remove image and container"
 	@echo "  make push     - Push image to registry"
 	@echo "  make pull     - Pull image from registry"
@@ -80,20 +80,11 @@ logs:
 shell:
 	docker exec -it $(CONTAINER_NAME) /bin/bash
 
-# Test the API endpoints
+# Test the application health check
 test:
 	@echo "Testing health endpoint..."
-	@curl -s http://localhost:$(PORT)/health | python -m json.tool
+	@curl -s http://localhost:$(PORT)/_stcore/health
 	@echo ""
-	@echo "Testing classify endpoint (ham)..."
-	@curl -s -X POST http://localhost:$(PORT)/classify \
-		-H "Content-Type: application/json" \
-		-d '{"message": "Hey, are we still meeting for lunch tomorrow?"}' | python -m json.tool
-	@echo ""
-	@echo "Testing classify endpoint (spam)..."
-	@curl -s -X POST http://localhost:$(PORT)/classify \
-		-H "Content-Type: application/json" \
-		-d '{"message": "CONGRATULATIONS! You won FREE cash prize! Click here NOW!!!"}' | python -m json.tool
 
 # Clean up image and container
 clean: stop

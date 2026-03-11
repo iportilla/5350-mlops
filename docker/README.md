@@ -1,6 +1,6 @@
 # Spam Classifier Docker Container
 
-A containerized REST API for spam classification using Flask and Docker.
+A containerized Streamlit web application for spam classification using Docker.
 
 ---
 
@@ -9,58 +9,61 @@ A containerized REST API for spam classification using Flask and Docker.
 ```mermaid
 flowchart TB
     subgraph Docker Container
-        A["Flask API<br/>Port 8080"]
+        A["Streamlit App<br/>Port 8080"]
         B[trained_model.pkl]
         C[Feature Extractor]
+        D[utils.py]
     end
     
-    D[HTTP Client] -->|POST /classify| A
-    A --> C
+    E[Web Browser] -->|HTTP Port 8080| A
+    A --> D
+    D --> C
     C --> B
     B -->|prediction| A
-    A -->|JSON response| D
+    A -->|UI Update| E
 ```
 
 ---
 
-## API Endpoints
+## Web Interface
+
+The container provides a user-friendly Streamlit interface for classifying messages.
 
 ```mermaid
 flowchart LR
-    subgraph Endpoints
-        A[GET /]
-        B[GET /health]
-        C[POST /classify]
+    subgraph UI Components
+        A[Text Area]
+        B[Classify Button]
+        C[Results Panel]
     end
     
-    A -->|API info| R1[JSON]
-    B -->|status check| R2[healthy/unhealthy]
-    C -->|message| R3[spam/ham prediction]
+    A -->|User Input| B
+    B -->|Triggers| C
 ```
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | API information and available endpoints |
-| `/health` | GET | Health check for load balancers |
-| `/classify` | POST | Classify a message as spam or ham |
+| Component | Description |
+|-----------|-------------|
+| **Message text** | Input field for typing or pasting the message to classify |
+| **Classify** | Button to run the classification model |
+| **Results** | Visual feedback showing if the message is SPAM or HAM |
 
 ---
 
-## Request/Response Flow
+## UI Interaction Flow
 
 ```mermaid
 sequenceDiagram
-    participant Client
-    participant Flask API
-    participant Feature Extractor
-    participant ML Model
+    participant user as User (Browser)
+    participant st as Streamlit App
+    participant utils as utils.py
+    participant model as ML Model
     
-    Client->>Flask API: "POST /classify<br/>{\"message\": \"...\"}"
-    Flask API->>Feature Extractor: Extract features
-    Feature Extractor-->>Flask API: {length, punct}
-    Flask API->>ML Model: Predict
-    ML Model-->>Flask API: "spam" | "ham"
-    Flask API-->>Client: JSON response
+    user->>st: Enter text & click Classify
+    st->>utils: extract_features()
+    utils-->>st: features {length, punct}
+    st->>model: model.predict()
+    model-->>st: "spam" | "ham"
+    st-->>user: Display SPAM/HAM indicator
 ```
 
 ---
@@ -121,40 +124,26 @@ flowchart TD
 
 ---
 
-## API Usage
+## Usage
 
-### Classify a Message
+### Accessing the Web UI
 
-**Request:**
-```bash
-curl -X POST http://localhost:8080/classify \
-  -H "Content-Type: application/json" \
-  -d '{"message": "Congratulations! You won a FREE prize!"}'
+Once the container is running, open your web browser and navigate to:
+
 ```
-
-**Response:**
-```json
-{
-  "message": "Congratulations! You won a FREE prize!",
-  "features": {
-    "length": 41,
-    "punct": 2
-  },
-  "prediction": "spam"
-}
+http://localhost:8080
 ```
 
 ### Health Check
 
+The container includes a health check endpoint used by Docker and container orchestrators:
+
 ```bash
-curl http://localhost:8080/health
+# Check if the healthy endpoint is active
+curl http://localhost:8080/_stcore/health
 ```
 
-```json
-{
-  "status": "healthy"
-}
-```
+Expected response: `ok`
 
 ---
 
@@ -177,9 +166,8 @@ flowchart LR
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PORT` | `8080` | API server port |
-| `MODEL_PATH` | `/app/trained_model.pkl` | Path to model file |
-| `DEBUG` | `false` | Enable Flask debug mode |
+| `PORT` | `8080` | Streamlit server port |
+| `MODEL_PATH` | `trained_model.pkl` | Path to model file |
 
 ---
 
@@ -216,7 +204,7 @@ services:
       - PORT=8080
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/_stcore/health"]
       interval: 30s
       timeout: 3s
       retries: 3
@@ -246,11 +234,11 @@ spec:
         - containerPort: 8080
         livenessProbe:
           httpGet:
-            path: /health
+            path: /_stcore/health
             port: 8080
         readinessProbe:
           httpGet:
-            path: /health
+            path: /_stcore/health
             port: 8080
 ---
 apiVersion: v1
@@ -272,7 +260,8 @@ spec:
 
 | File | Description |
 |------|-------------|
-| `app.py` | Flask API application |
+| `app.py` | Streamlit application |
+| `utils.py` | Feature extraction utilities |
 | `Dockerfile` | Container build instructions |
 | `requirements.txt` | Python dependencies |
 | `Makefile` | Build and deployment commands |
@@ -330,9 +319,8 @@ flowchart LR
 ```
 
 For production, consider:
-- Using gunicorn with multiple workers: `gunicorn -w 4 -b 0.0.0.0:8080 app:app`
-- Adding authentication (API keys, JWT)
-- Implementing rate limiting
+- Adding authentication (Proxy, Auth0)
+- Implementing rate limiting at the ingress level
 - Setting up monitoring (Prometheus, Grafana)
 - Using a reverse proxy (nginx, traefik)
 
