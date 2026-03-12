@@ -76,9 +76,9 @@ k3d image import spam-classifier:latest -c my-cluster
 Deploy the application and its service:
 
 ```bash
-# From the docker/kubernetes directory
-kubectl apply -f deployment.yaml
-kubectl apply -f service.yaml
+# From the docker directory
+kubectl apply -f kubernetes/deployment.yaml
+kubectl apply -f kubernetes/service.yaml
 ```
 
 ### 4. Verify the Pod Status
