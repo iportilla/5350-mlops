@@ -30,7 +30,7 @@ We used a **spam classifier project** and progressively deployed it in more prod
 | 3 | Package model with Docker | Level 2 |
 | 4 | Deploy as serverless API with IBM Code Engine | Level 3 |
 | 5 | Deploy serverless API with Azure Functions | Level 3 |
-| 6 | Future: monitoring and automated retraining | Level 4 |
+| 6 | Monitoring, quality gates and automated retraining ([lab-mlops-101](../lab-mlops-101/README.md), in miniature) | Level 4 |
 
 ---
 
@@ -44,6 +44,7 @@ flowchart LR
     Level 2"] --> IBM["IBM Code Engine
     Level 3"] --> Azure["Azure Functions
     Level 3"] --> Retrain["Monitoring + Retraining
+    lab-mlops-101
     Level 4"]
 ```
 

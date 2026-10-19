@@ -4,6 +4,28 @@ Welcome to this educational repository designed to teach **MLOps (Machine Learni
 
 This project evolves from a simple Python script into a production-ready, containerized application with an automated retraining pipeline.
 
+## Start here: the labs
+
+| Lab | What you do | Start with |
+|---|---|---|
+| [lab-1](lab-1/README.md) | Train spam models v1, v2 and v3 and discover why accuracy can mislead | [lab-1/README.md](lab-1/README.md) |
+| [lab-mlops-101](lab-mlops-101/README.md) | The MLOps loop: model cards, a retraining pipeline with a quality gate, rollback, safe rollouts and drift. Command line or Jupyter notebooks | [lab-mlops-101/README.md](lab-mlops-101/README.md) |
+
+The lab-mlops-101 notebooks are the quickest way in: `train_model.ipynb`, then `mlops_basics.ipynb` (new to data science) or `mlops_pipeline.ipynb` (full version). Each has a Starter section with TODOs and a Solution section.
+
+## Repository layout
+
+| Folder | What is in it |
+|---|---|
+| [src/](src/) | The original spam classifier app: KNN model, Streamlit UI and `mlops_pipeline.py` |
+| [lab-1/](lab-1/README.md) | Lab 1: training and the accuracy trap |
+| [lab-mlops-101/](lab-mlops-101/README.md) | MLOps 101 lab: scripts, notebooks, instructor guide and solutions |
+| [docker/](docker/README.md) | Running the model in Docker, on a cloud VM and on Kubernetes |
+| [ibm-function/](ibm-function/README.md) | The model as a serverless API on IBM Code Engine |
+| [azure/](azure/README.md) | The model as a serverless API on Azure Functions |
+| [summary/](summary/README.md) | How the class steps map to the MLOps maturity model |
+| [docs/](docs/README.md) | Slides (PDF) |
+
 ## Documentation Guide
 
 Explore the following documents to understand different aspects of the project:
@@ -14,21 +36,20 @@ Explore the following documents to understand different aspects of the project:
 *   **Target Audience**: Developers wanting to run the app.
 
 ```
-./spam/
-├── Dockerfile
+5350-mlops/
+├── Dockerfile              # builds the src/ Streamlit app
 ├── requirements.txt
-├── README.md               # Cover Page
-├── PROJECT_DETAILS.md      # Technical Documentation
-├── MLOPS_README.md         # MLOps Best Practices
-├── TEACHING_PROMPTS.md     # Session Prompts
+├── README.md               # this page
+├── PROJECT_DETAILS.md      # technical documentation for the src/ app
+├── MLOPS_README.md         # MLOps best practices
+├── TEACHING_PROMPTS.md     # the prompts used to build src/
 └── src/
     ├── app.py
     ├── spam_classifier.py
     ├── spam_model.pkl
     ├── mlops_pipeline.py
-    ├── smsspamcollection-1k.csv
-    ├── synthetic_sms_numeric.csv
-    └── predict_demo.py
+    ├── predict_demo.py
+    └── *.csv               # datasets
 ```
 
 ### 2. [MLOps Best Practices](MLOPS_README.md)
@@ -45,7 +66,7 @@ Explore the following documents to understand different aspects of the project:
 
 ## Quick Start
 
-To run the application immediately using Docker:
+To run the `src/` application immediately using Docker:
 
 ```bash
 docker build -t spam-classifier .

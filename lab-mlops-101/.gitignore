@@ -1,0 +1,13 @@
+# Created when the lab runs: students generate these themselves
+models/
+mlops_nb/
+mlops_basics/
+data/*.csv
+!data/sms_real_1k.csv
+
+# Python / Jupyter clutter
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+.virtual_documents/
+.DS_Store
