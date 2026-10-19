@@ -1,0 +1,16 @@
+# Your workspace details: keep them out of git
+config.json
+# your subscription and resource group (copy env.sample to create it)
+.env
+
+# Created when the notebook runs
+downloads/
+outputs/
+request.json
+mlruns/
+# local MLflow tracking store, created when the scripts run outside Azure
+mlflow.db
+
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/

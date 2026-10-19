@@ -2,6 +2,8 @@
 
 This document outlines the MLOps architecture implemented in this project and recommends strategies for production deployment.
 
+> **Try it hands-on:** [lab-mlops-101](lab-mlops-101/README.md) implements every idea on this page in a few lines of Python, as scripts or as Jupyter notebooks (`mlops_basics.ipynb` for beginners, `mlops_pipeline.ipynb` for the full loop).
+
 ## 1. The Automated Pipeline (`src/mlops_pipeline.py`)
 
 We have implemented a robust pipeline to handle model retraining and lifecycle management.
@@ -19,10 +21,12 @@ We have implemented a robust pipeline to handle model retraining and lifecycle m
     *   Calculates accuracy on a held-out test set.
     *   **The Gate**: The model is ONLY promoted if accuracy exceeds a strict threshold (currently **85%**).
     *   *Benefit*: Prevents performance regression caused by noisy data or concept drift.
+    *   *Caveat*: Accuracy alone is a weak gate when one class is rare. About 85% of SMS messages are ham, so a model that misses almost all spam can still score above 85%. Add a rule for the class you care about, such as **spam recall ≥ 0.80**. The lab shows a model with 85.6% accuracy and 4% recall passing an accuracy-only gate.
 
 4.  **Versioning**:
     *   Every training run saves a model artifact with a timestamp (e.g., `spam_model_20251119_063257.pkl`).
     *   *Benefit*: Allows for easy rollback to previous versions if issues arise.
+    *   *Best Practice*: Keep a **model registry**: one row per version with its training data, metrics and stage (candidate, production, archived). The lab uses a CSV file; tools like MLflow do this at scale. Keep rejected versions too: they are evidence when something goes wrong.
 
 5.  **Promotion**:
     *   If the Quality Gate is passed, the new model overwrites the production model (`spam_model.pkl`).
